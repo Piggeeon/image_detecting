@@ -1,0 +1,2 @@
+class NoTaskError(Exception):
+    pass

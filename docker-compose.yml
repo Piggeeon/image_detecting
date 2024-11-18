@@ -1,0 +1,33 @@
+services:
+  # App Service
+  web_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+    command: bash -c "sleep 2; alembic revision --autogenerate; alembic upgrade head; python -m src.app"
+    ports:
+      - "8080:8080"
+    volumes:
+      - versions:/app/src/migrations/versions
+    env_file:
+      - .env
+
+
+  # Postgres Service
+  postgres:
+    image: postgres:16.4
+    container_name: postgres-container
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: test_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+  versions:

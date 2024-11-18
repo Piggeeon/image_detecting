@@ -1,0 +1,2 @@
+class FaceCloudBadResponseError(Exception):
+    pass
